@@ -7,6 +7,8 @@ import com.ysferdgnn.postapp_api.utils.TimeUtils;
 import org.springframework.stereotype.Service;
 
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,11 @@ public class UsersService {
         usersToSave.setUpdatedAt(timeUtils.getTimestampNow());
 
         return  usersRepository.save(usersToSave);
+    }
+    public Users saveOneUsers(Users users){
+        users.setUpdatedAt(new Timestamp(new Date().getTime()));
+        users.setCreatedAt(new Timestamp(new Date().getTime()));
+        return usersRepository.save(users);
     }
 
     public List<Users> getAllUsers() {
@@ -63,5 +70,9 @@ public class UsersService {
         usersToUpdate.setUpdatedAt(timeUtils.getTimestampNow());
 
         return usersRepository.save(usersToUpdate);
+    }
+
+    public Users findByUsername(String username) {
+        return usersRepository.findByUsername(username);
     }
 }
