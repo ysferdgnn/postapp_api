@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/comment")
 @ApiOperation(value = "Comment api controller")
+
 public class CommentController {
 
     CommentService commentService;

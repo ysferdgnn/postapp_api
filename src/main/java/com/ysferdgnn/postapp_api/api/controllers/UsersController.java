@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @Api(value = "User Api Documentation")
+
 public class UsersController {
 
     UsersService usersService;

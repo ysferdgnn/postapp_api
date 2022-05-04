@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/likes")
 @Api(value = "likes api controller")
+
 public class LikesController {
 
     LikesService likesService;
