@@ -1,6 +1,7 @@
 package com.ysferdgnn.postapp_api.api.controllers;
 
 import com.ysferdgnn.postapp_api.api.Requests.PostPostRequest;
+import com.ysferdgnn.postapp_api.api.Responses.PostAndLikesDto;
 import com.ysferdgnn.postapp_api.api.database.models.Post;
 import com.ysferdgnn.postapp_api.api.database.services.PostService;
 import io.swagger.annotations.Api;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/post")
@@ -23,8 +25,9 @@ public class PostController {
 
     @GetMapping
     @ApiOperation(value = "get all posts")
-    public List<Post> getAllPosts(){
-       return postService.getAllPosts();
+    public List<PostAndLikesDto> getAllPosts(){
+       List<Post> postList = postService.getAllPosts();
+      return postList.stream().map(PostAndLikesDto::new).collect(Collectors.toList());
     }
 
     @ApiOperation(value = "find one post by postId")
