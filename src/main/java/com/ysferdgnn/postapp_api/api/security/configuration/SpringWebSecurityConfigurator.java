@@ -92,8 +92,8 @@ public class SpringWebSecurityConfigurator extends WebSecurityConfigurerAdapter 
                 .permitAll()
 //                .antMatchers("/api/admin/**")
 //                .hasAnyAuthority("admin")
-                .antMatchers(HttpMethod.GET,"/api/post/**")
-                .permitAll()
+//                .antMatchers(HttpMethod.GET,"/api/post/**")
+//                .permitAll()
                 .anyRequest()
                 .authenticated();
 
