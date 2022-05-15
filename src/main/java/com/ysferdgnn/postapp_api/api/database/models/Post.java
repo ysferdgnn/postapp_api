@@ -8,6 +8,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "Post")
@@ -37,4 +38,9 @@ public class Post implements Serializable {
     @JoinColumn(name = "usersid",insertable = false,nullable = false,updatable = false)
     @JsonIgnore
     private Users users;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postid",insertable = false,nullable = false,updatable = false)
+    @JsonIgnore
+    private List<Likes> likes;
 }
