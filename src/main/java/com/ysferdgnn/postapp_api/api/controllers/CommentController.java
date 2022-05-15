@@ -29,6 +29,12 @@ public class CommentController {
     public Comment findCommentById(@PathVariable Long commentId){
         return commentService.findById(commentId);
     }
+
+    @GetMapping("/postId={postId}")
+    public List<Comment> getAllCommentsByPostId(@PathVariable Long postId){
+        return commentService.selectAllByPostId(postId);
+    }
+
     @PostMapping
     public Comment saveOneComment(@RequestBody CommentPostRequest commentPostRequest){
         return commentService.saveOneComment(commentPostRequest);
