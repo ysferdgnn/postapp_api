@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,7 +15,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Likes")
-@Data
+@Getter
+@Setter
 @ApiModel(value = "Likes Model")
 public class Likes implements Serializable {
 
@@ -27,18 +30,19 @@ public class Likes implements Serializable {
     @ApiModelProperty(value = "User Id for describe who liked post")
     private Long usersId;
 
-    @Column(name = "postid",nullable = false)
+    @Column(name = "postid",nullable = false,unique = true)
     @ApiModelProperty(value = "Post Id for describe which post liked")
     private Long postId;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usersid",insertable = false,updatable = false,nullable = false)
     @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
+
     private Users users;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postid",insertable = false,updatable = false,nullable = false)
     @JsonIgnore
+
     private Post post;
 }
