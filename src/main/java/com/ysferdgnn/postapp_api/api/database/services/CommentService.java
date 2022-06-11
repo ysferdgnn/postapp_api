@@ -1,12 +1,14 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
-import com.ysferdgnn.postapp_api.api.Requests.CommentPostRequest;
+import com.ysferdgnn.postapp_api.api.requests.CommentPostRequest;
+import com.ysferdgnn.postapp_api.api.responses.CommentResponse;
 import com.ysferdgnn.postapp_api.api.database.models.Comment;
 import com.ysferdgnn.postapp_api.api.database.repos.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -21,6 +23,11 @@ public class CommentService {
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
+    }
+
+    public List<CommentResponse> getAllCommentsByPostIdAsCommentResponse(Long postId){
+        List<Comment> commentList = commentRepository.findAllByPostId(postId);
+        return commentList.stream().map(CommentResponse::new).collect(Collectors.toList());
     }
 
     public Comment findById(Long commentId) {

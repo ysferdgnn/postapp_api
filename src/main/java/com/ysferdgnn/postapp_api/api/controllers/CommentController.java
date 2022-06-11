@@ -1,6 +1,7 @@
 package com.ysferdgnn.postapp_api.api.controllers;
 
-import com.ysferdgnn.postapp_api.api.Requests.CommentPostRequest;
+import com.ysferdgnn.postapp_api.api.requests.CommentPostRequest;
+import com.ysferdgnn.postapp_api.api.responses.CommentResponse;
 import com.ysferdgnn.postapp_api.api.database.models.Comment;
 import com.ysferdgnn.postapp_api.api.database.services.CommentService;
 import io.swagger.annotations.ApiOperation;
@@ -31,8 +32,8 @@ public class CommentController {
     }
 
     @GetMapping("/postId={postId}")
-    public List<Comment> getAllCommentsByPostId(@PathVariable Long postId){
-        return commentService.selectAllByPostId(postId);
+    public List<CommentResponse> getAllCommentsByPostId(@PathVariable Long postId){
+        return commentService.getAllCommentsByPostIdAsCommentResponse(postId);
     }
 
     @PostMapping
