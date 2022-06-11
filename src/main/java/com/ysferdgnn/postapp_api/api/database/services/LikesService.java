@@ -1,6 +1,6 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
-import com.ysferdgnn.postapp_api.api.Requests.LikesPostRequest;
+import com.ysferdgnn.postapp_api.api.requests.LikesPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Likes;
 import com.ysferdgnn.postapp_api.api.database.repos.LikesRepository;
 import org.springframework.stereotype.Service;
@@ -34,6 +34,8 @@ public class LikesService {
        return likesRepository.save(likesToSave);
     }
 
+
+
     public Likes putLikesById(Long likesId, LikesPostRequest likesPostRequest) {
         //TODO: implement converter
         //TODO: implement check user
@@ -54,5 +56,20 @@ public class LikesService {
 
     public void deleteById(Long likesId) {
         likesRepository.deleteById(likesId);
+    }
+
+    public Likes changeLikes(LikesPostRequest likesPostRequest) {
+        Likes likesToSave = new Likes();
+        likesToSave.setPostId(likesPostRequest.getPostId());
+        likesToSave.setUsersId(likesPostRequest.getUsersId());
+
+        Likes likesfromDb = likesRepository.findByUsersIdAndPostId(likesToSave.getUsersId(),likesToSave.getPostId());
+
+        if (likesfromDb ==null){
+             return  likesRepository.save(likesToSave);
+        }else{
+            likesRepository.delete(likesfromDb);
+            return null;
+        }
     }
 }

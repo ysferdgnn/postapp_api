@@ -1,7 +1,7 @@
 package com.ysferdgnn.postapp_api.api.controllers;
 
 
-import com.ysferdgnn.postapp_api.api.Requests.LikesPostRequest;
+import com.ysferdgnn.postapp_api.api.requests.LikesPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Likes;
 import com.ysferdgnn.postapp_api.api.database.services.LikesService;
 import io.swagger.annotations.Api;
@@ -37,6 +37,11 @@ public class LikesController {
     @ApiOperation(value = "save one likes with likes post request model")
     public Likes saveOneLikes(@RequestBody LikesPostRequest likesPostRequest){
         return likesService.saveOneLikes(likesPostRequest);
+    }
+
+    @PostMapping("/changelikes")
+    public Likes changeLikes(@RequestBody LikesPostRequest likesPostRequest){
+        return likesService.changeLikes(likesPostRequest);
     }
 
     @PutMapping("/{likesId}")
