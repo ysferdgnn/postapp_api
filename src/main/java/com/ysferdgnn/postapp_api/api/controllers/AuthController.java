@@ -1,15 +1,14 @@
 package com.ysferdgnn.postapp_api.api.controllers;
 
 
-import com.ysferdgnn.postapp_api.api.Requests.LoginRequest;
-import com.ysferdgnn.postapp_api.api.Requests.RefreshRequest;
-import com.ysferdgnn.postapp_api.api.Responses.LoginResponse;
+import com.ysferdgnn.postapp_api.api.requests.LoginRequest;
+import com.ysferdgnn.postapp_api.api.requests.RefreshRequest;
+import com.ysferdgnn.postapp_api.api.responses.LoginResponse;
 import com.ysferdgnn.postapp_api.api.database.models.RefreshToken;
 import com.ysferdgnn.postapp_api.api.database.models.Users;
 import com.ysferdgnn.postapp_api.api.database.services.RefreshTokenService;
 import com.ysferdgnn.postapp_api.api.database.services.UsersService;
 import com.ysferdgnn.postapp_api.api.security.tokenProviders.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

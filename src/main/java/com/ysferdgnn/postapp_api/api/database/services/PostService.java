@@ -1,6 +1,6 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
-import com.ysferdgnn.postapp_api.api.Requests.PostPostRequest;
+import com.ysferdgnn.postapp_api.api.requests.PostPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Post;
 import com.ysferdgnn.postapp_api.api.database.repos.PostRepository;
 import org.springframework.stereotype.Service;
@@ -55,6 +55,7 @@ public class PostService {
     }
 
     public void deleteById(Long postId) {
+
         postRepository.deleteById(postId);
     }
 }

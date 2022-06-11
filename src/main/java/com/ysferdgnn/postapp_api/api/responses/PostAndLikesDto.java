@@ -1,4 +1,4 @@
-package com.ysferdgnn.postapp_api.api.Responses;
+package com.ysferdgnn.postapp_api.api.responses;
 
 import com.ysferdgnn.postapp_api.api.database.models.Likes;
 import com.ysferdgnn.postapp_api.api.database.models.Post;

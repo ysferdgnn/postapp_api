@@ -1,6 +1,6 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
-import com.ysferdgnn.postapp_api.api.Requests.UsersPostRequest;
+import com.ysferdgnn.postapp_api.api.requests.UsersPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Users;
 import com.ysferdgnn.postapp_api.api.database.repos.UsersRepository;
 import com.ysferdgnn.postapp_api.utils.TimeUtils;

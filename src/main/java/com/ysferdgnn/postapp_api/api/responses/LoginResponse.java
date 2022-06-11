@@ -1,4 +1,4 @@
-package com.ysferdgnn.postapp_api.api.Responses;
+package com.ysferdgnn.postapp_api.api.responses;
 
 import lombok.Data;
 
