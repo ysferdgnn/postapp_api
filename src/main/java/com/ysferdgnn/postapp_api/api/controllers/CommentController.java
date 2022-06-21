@@ -5,6 +5,7 @@ import com.ysferdgnn.postapp_api.api.responses.CommentResponse;
 import com.ysferdgnn.postapp_api.api.database.models.Comment;
 import com.ysferdgnn.postapp_api.api.database.services.CommentService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.util.Streamable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +22,10 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @GetMapping
-    public List<Comment> getAllComments(){
-        return commentService.getAllComments();
+    @GetMapping("/{pageNo}/{pageSize}")
+    public List<Comment> getAllComments(@PathVariable int pageNo,@PathVariable int pageSize){
+
+        return Streamable.of(commentService.getAllComments(pageNo,pageSize)).toList();
     }
 
     @GetMapping("/{commentId}")
@@ -31,9 +33,9 @@ public class CommentController {
         return commentService.findById(commentId);
     }
 
-    @GetMapping("/postId={postId}")
-    public List<CommentResponse> getAllCommentsByPostId(@PathVariable Long postId){
-        return commentService.getAllCommentsByPostIdAsCommentResponse(postId);
+    @GetMapping("/postId={postId}/{pageNo}/{pageSize}")
+    public List<CommentResponse> getAllCommentsByPostId(@PathVariable Long postId,@PathVariable int pageNo,@PathVariable int pageSize){
+        return commentService.getAllCommentsByPostIdAsCommentResponse(postId,pageNo,pageSize);
     }
 
     @PostMapping

@@ -4,6 +4,8 @@ import com.ysferdgnn.postapp_api.api.requests.CommentPostRequest;
 import com.ysferdgnn.postapp_api.api.responses.CommentResponse;
 import com.ysferdgnn.postapp_api.api.database.models.Comment;
 import com.ysferdgnn.postapp_api.api.database.repos.CommentRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +23,14 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public List<Comment> getAllComments() {
+    public Iterable<Comment> getAllComments(int pageNo,int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
         return commentRepository.findAll();
     }
 
-    public List<CommentResponse> getAllCommentsByPostIdAsCommentResponse(Long postId){
-        List<Comment> commentList = commentRepository.findAllByPostId(postId);
+    public List<CommentResponse> getAllCommentsByPostIdAsCommentResponse(Long postId,int pageNo,int pageSize){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        List<Comment> commentList = commentRepository.findAllByPostId(postId,pageable);
         return commentList.stream().map(CommentResponse::new).collect(Collectors.toList());
     }
 
@@ -42,7 +46,8 @@ public class CommentService {
         commentToSave.setPostId(commentPostRequest.getPostId());
         commentToSave.setUsersId(commentPostRequest.getUsersId());
         commentToSave.setText(commentPostRequest.getText());
-        return commentRepository.save(commentToSave);
+        commentToSave= commentRepository.save(commentToSave);
+        return commentToSave;
     }
 
     public Comment putOneCommentById(Long commentId, CommentPostRequest commentPostRequest) {
@@ -67,7 +72,9 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
-    public List<Comment> selectAllByPostId(Long postId) {
-        return commentRepository.findAllByPostId(postId);
+    public List<Comment> selectAllByPostId(Long postId,int pageNo,int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+
+        return commentRepository.findAllByPostId(postId,pageable);
     }
 }
