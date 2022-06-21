@@ -7,6 +7,7 @@ import com.ysferdgnn.postapp_api.api.responses.PostAndLikesDto;
 import com.ysferdgnn.postapp_api.api.database.services.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.util.Streamable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,8 @@ public class PostController {
     @GetMapping
     @ApiOperation(value = "get all posts")
     public List<PostAndLikesDto> getAllPosts(){
-       List<Post> postList = postService.getAllPosts();
+       Iterable<Post> postListIterable = postService.getAllPosts();
+        List<Post> postList = Streamable.of(postListIterable).toList();
       List<PostAndLikesDto> dtoList= postList.stream().map(PostAndLikesDto::new).collect(Collectors.toList());
       return dtoList;
     }

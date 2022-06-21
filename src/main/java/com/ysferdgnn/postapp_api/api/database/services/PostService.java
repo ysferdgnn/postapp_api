@@ -5,7 +5,6 @@ import com.ysferdgnn.postapp_api.api.database.models.Post;
 import com.ysferdgnn.postapp_api.api.database.repos.PostRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,8 +16,8 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public Iterable<Post> getAllPosts() {
+        return  postRepository.findAll();
     }
 
     public Post findById(Long postId) {
