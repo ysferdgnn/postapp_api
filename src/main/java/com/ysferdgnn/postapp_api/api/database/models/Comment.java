@@ -2,6 +2,7 @@ package com.ysferdgnn.postapp_api.api.database.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ysferdgnn.postapp_api.api.requests.CommentPostRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,6 +16,14 @@ import javax.persistence.*;
 @Data
 @ApiModel(value = "Comment Model")
 public class Comment {
+
+    public static  Comment createCommentFromCommentPostRequest(CommentPostRequest commentPostRequest){
+        Comment comment = new Comment();
+        comment.setPostId(commentPostRequest.getPostId());
+        comment.setUsersId(commentPostRequest.getUsersId());
+        comment.setText(commentPostRequest.getText());
+        return  comment;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

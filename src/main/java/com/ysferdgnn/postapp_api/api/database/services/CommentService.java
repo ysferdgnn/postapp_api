@@ -40,12 +40,8 @@ public class CommentService {
     }
 
     public Comment saveOneComment(CommentPostRequest commentPostRequest) {
-        //TODO: implement converter
         //TODO: implement validation
-        Comment commentToSave = new Comment();
-        commentToSave.setPostId(commentPostRequest.getPostId());
-        commentToSave.setUsersId(commentPostRequest.getUsersId());
-        commentToSave.setText(commentPostRequest.getText());
+        Comment commentToSave = Comment.createCommentFromCommentPostRequest(commentPostRequest);
         commentToSave= commentRepository.save(commentToSave);
         return commentToSave;
     }
