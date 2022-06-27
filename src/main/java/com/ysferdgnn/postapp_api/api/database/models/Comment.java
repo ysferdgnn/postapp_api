@@ -6,16 +6,19 @@ import com.ysferdgnn.postapp_api.api.requests.CommentPostRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Comment")
 @Data
 @ApiModel(value = "Comment Model")
-public class Comment {
+public class Comment implements Serializable {
 
     public static  Comment createCommentFromCommentPostRequest(CommentPostRequest commentPostRequest){
         Comment comment = new Comment();
@@ -44,10 +47,11 @@ public class Comment {
     private String text;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "usersId",insertable = false,updatable = false,nullable = false)
     private Users users;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "postId",insertable = false,updatable = false,nullable = false)
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)

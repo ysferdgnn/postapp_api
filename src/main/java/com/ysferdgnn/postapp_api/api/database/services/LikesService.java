@@ -1,8 +1,9 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
+import com.ysferdgnn.postapp_api.api.database.repos.concretes.LikesRepositoryImpl;
 import com.ysferdgnn.postapp_api.api.requests.LikesPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Likes;
-import com.ysferdgnn.postapp_api.api.database.repos.LikesRepository;
+import com.ysferdgnn.postapp_api.api.database.repos.abstracts.LikesRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,19 +12,19 @@ import java.util.Optional;
 @Service
 public class LikesService {
 
-    LikesRepository likesRepository;
+    LikesRepositoryImpl likesRepositoryImpl;
 
-    public LikesService(LikesRepository likesRepository) {
-        this.likesRepository = likesRepository;
+    public LikesService(LikesRepositoryImpl likesRepositoryImpl) {
+        this.likesRepositoryImpl = likesRepositoryImpl;
     }
 
     public List<Likes> getAllLikes() {
-       return likesRepository.findAll();
+       return likesRepositoryImpl.findAll();
     }
 
     public Likes findById(Long likesId) {
         //TODO: implement custom exception
-        return likesRepository.findById(likesId).orElse(null);
+        return likesRepositoryImpl.findById(likesId).orElse(null);
     }
 
     public Likes saveOneLikes(LikesPostRequest likesPostRequest) {
@@ -31,7 +32,7 @@ public class LikesService {
         Likes likesToSave = new Likes();
         likesToSave.setPostId(likesPostRequest.getPostId());
         likesToSave.setUsersId(likesPostRequest.getUsersId());
-       return likesRepository.save(likesToSave);
+       return likesRepositoryImpl.save(likesToSave);
     }
 
 
@@ -41,7 +42,7 @@ public class LikesService {
         //TODO: implement check user
         //TODO: implement custom exception
 
-        Optional<Likes> optLikesToUpdate = likesRepository.findById(likesId);
+        Optional<Likes> optLikesToUpdate = likesRepositoryImpl.findById(likesId);
 
         if (!optLikesToUpdate.isPresent()){
             return null;
@@ -49,13 +50,13 @@ public class LikesService {
        Likes likesToUpdate= optLikesToUpdate.get();
         likesToUpdate.setUsersId(likesPostRequest.getUsersId());
         likesToUpdate.setPostId(likesPostRequest.getPostId());
-       return likesRepository.save(likesToUpdate);
+       return likesRepositoryImpl.save(likesToUpdate);
 
 
     }
 
     public void deleteById(Long likesId) {
-        likesRepository.deleteById(likesId);
+        likesRepositoryImpl.deleteById(likesId);
     }
 
     public Likes changeLikes(LikesPostRequest likesPostRequest) {
@@ -63,12 +64,12 @@ public class LikesService {
         likesToSave.setPostId(likesPostRequest.getPostId());
         likesToSave.setUsersId(likesPostRequest.getUsersId());
 
-        Likes likesfromDb = likesRepository.findByUsersIdAndPostId(likesToSave.getUsersId(),likesToSave.getPostId());
+        Likes likesfromDb = likesRepositoryImpl.findByUsersIdAndPostId(likesToSave.getUsersId(),likesToSave.getPostId());
 
         if (likesfromDb ==null){
-             return  likesRepository.save(likesToSave);
+             return  likesRepositoryImpl.save(likesToSave);
         }else{
-            likesRepository.delete(likesfromDb);
+            likesRepositoryImpl.delete(likesfromDb);
             return null;
         }
     }

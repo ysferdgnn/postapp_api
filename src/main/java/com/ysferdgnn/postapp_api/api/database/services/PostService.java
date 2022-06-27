@@ -1,8 +1,8 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
+import com.ysferdgnn.postapp_api.api.database.repos.concretes.PostRepositoryImpl;
 import com.ysferdgnn.postapp_api.api.requests.PostPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Post;
-import com.ysferdgnn.postapp_api.api.database.repos.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,19 +10,19 @@ import java.util.Optional;
 @Service
 public class PostService {
 
-    PostRepository postRepository;
+    PostRepositoryImpl postRepositoryImpl;
 
-    public PostService(PostRepository postRepository) {
-        this.postRepository = postRepository;
+    public PostService(PostRepositoryImpl postRepository) {
+        this.postRepositoryImpl = postRepository;
     }
 
     public Iterable<Post> getAllPosts() {
-        return  postRepository.findAll();
+        return  postRepositoryImpl.findAll();
     }
 
     public Post findById(Long postId) {
         //TODO: implement custom exception
-        return postRepository.findById(postId).orElse(null);
+        return postRepositoryImpl.findById(postId).orElse(null);
     }
 
     public Post saveOnePost(PostPostRequest postPostRequest) {
@@ -34,7 +34,7 @@ public class PostService {
         postToSave.setTitle(postPostRequest.getTitle());
         postToSave.setUsersId(postPostRequest.getUsersId());
 
-        return postRepository.save(postToSave);
+        return postRepositoryImpl.save(postToSave);
     }
 
     public Post putPostById(Long postId, PostPostRequest postPostRequest) {
@@ -42,7 +42,7 @@ public class PostService {
         //TODO: implement converter class
         //TODO: implement custom exception
 
-        Optional<Post> optPostToPut = postRepository.findById(postId);
+        Optional<Post> optPostToPut = postRepositoryImpl.findById(postId);
         if (!optPostToPut.isPresent()){
             return null;
         }
@@ -50,11 +50,11 @@ public class PostService {
         postToPut.setUsersId(postPostRequest.getUsersId());
         postToPut.setTitle(postPostRequest.getTitle());
         postToPut.setText(postPostRequest.getText());
-       return  postRepository.save(postToPut);
+       return  postRepositoryImpl.save(postToPut);
     }
 
     public void deleteById(Long postId) {
 
-        postRepository.deleteById(postId);
+        postRepositoryImpl.deleteById(postId);
     }
 }

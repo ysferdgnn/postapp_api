@@ -9,9 +9,14 @@ public class CommentResponse {
     private String username;
     private String text;
 
-    public CommentResponse (Comment comment){
-        this.username = comment.getUsers().getUsername();
-        this.text =comment.getText();
+    public CommentResponse() {
+    }
+
+    public static CommentResponse createFromComment(Comment comment){
+        CommentResponse commentResponse = new CommentResponse();
+        commentResponse.text=comment.getText();
+        commentResponse.username = comment.getUsers().getUsername();
+        return  commentResponse;
     }
 
 }

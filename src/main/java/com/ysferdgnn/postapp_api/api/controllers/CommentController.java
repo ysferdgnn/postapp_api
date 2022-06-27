@@ -39,8 +39,10 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment saveOneComment(@RequestBody CommentPostRequest commentPostRequest){
-        return commentService.saveOneComment(commentPostRequest);
+    public CommentResponse saveOneComment(@RequestBody CommentPostRequest commentPostRequest){
+        Comment comment = commentService.saveOneComment(commentPostRequest);
+        return  CommentResponse.createFromComment(comment);
+
     }
 
     @PutMapping("/{commentId}")

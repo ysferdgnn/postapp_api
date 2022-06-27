@@ -1,4 +1,4 @@
-package com.ysferdgnn.postapp_api.api.database.repos;
+package com.ysferdgnn.postapp_api.api.database.repos.abstracts;
 
 import com.ysferdgnn.postapp_api.api.database.models.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;

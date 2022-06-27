@@ -1,7 +1,7 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
 import com.ysferdgnn.postapp_api.api.database.models.RefreshToken;
-import com.ysferdgnn.postapp_api.api.database.repos.RefreshTokenRepository;
+import com.ysferdgnn.postapp_api.api.database.repos.concretes.RefreshTokenRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -10,27 +10,27 @@ import java.util.Optional;
 @Service
 public class RefreshTokenService {
 
-    RefreshTokenRepository refreshTokenRepository;
+    RefreshTokenRepositoryImpl refreshTokenRepositoryImpl;
 
-    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository) {
-        this.refreshTokenRepository = refreshTokenRepository;
+    public RefreshTokenService(RefreshTokenRepositoryImpl refreshTokenRepository) {
+        this.refreshTokenRepositoryImpl = refreshTokenRepository;
     }
 
 
     public RefreshToken saveOneRefreshToken(RefreshToken refreshToken){
-        return  refreshTokenRepository.save(refreshToken);
+        return  refreshTokenRepositoryImpl.save(refreshToken);
     }
 
     public  void deleteRefreshToken(RefreshToken refreshToken){
-        refreshTokenRepository.delete(refreshToken);
+        refreshTokenRepositoryImpl.delete(refreshToken);
     }
 
     public void  deleteRefreshTokenById(Long id){
-        refreshTokenRepository.deleteById(id);
+        refreshTokenRepositoryImpl.deleteById(id);
     }
 
     public Optional<RefreshToken> findByUserId(Long id){
-        return refreshTokenRepository.findByUserId(id);
+        return refreshTokenRepositoryImpl.findByUserId(id);
     }
 
     public boolean isRefreshTokenExpired(RefreshToken refreshToken){

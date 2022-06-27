@@ -30,7 +30,7 @@ public class Likes implements Serializable {
     @ApiModelProperty(value = "User Id for describe who liked post")
     private Long usersId;
 
-    @Column(name = "postid",nullable = false,unique = true)
+    @Column(name = "postid",nullable = false)
     @ApiModelProperty(value = "Post Id for describe which post liked")
     private Long postId;
 
