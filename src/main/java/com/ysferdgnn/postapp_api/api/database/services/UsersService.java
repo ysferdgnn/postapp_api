@@ -1,9 +1,8 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
-import com.ysferdgnn.postapp_api.api.database.repos.concretes.UsersRepositoryImpl;
+import com.ysferdgnn.postapp_api.api.database.repository.UsersRepository;
 import com.ysferdgnn.postapp_api.api.requests.UsersPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Users;
-import com.ysferdgnn.postapp_api.api.database.repos.abstracts.UsersRepository;
 import com.ysferdgnn.postapp_api.utils.TimeUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +15,11 @@ import java.util.Optional;
 @Service
 public class UsersService {
 
-    UsersRepositoryImpl usersRepositoryImpl;
+    UsersRepository usersRepository;
     TimeUtils timeUtils;
 
-    public UsersService(UsersRepositoryImpl usersRepositoryImpl,TimeUtils timeUtils) {
-        this.usersRepositoryImpl = usersRepositoryImpl;
+    public UsersService(UsersRepository usersRepository,TimeUtils timeUtils) {
+        this.usersRepository = usersRepository;
         this.timeUtils = timeUtils;
     }
 
@@ -34,24 +33,24 @@ public class UsersService {
         usersToSave.setCreatedAt(timeUtils.getTimestampNow());
         usersToSave.setUpdatedAt(timeUtils.getTimestampNow());
 
-        return  usersRepositoryImpl.save(usersToSave);
+        return  usersRepository.save(usersToSave);
     }
     public Users saveOneUsers(Users users){
         users.setUpdatedAt(new Timestamp(new Date().getTime()));
         users.setCreatedAt(new Timestamp(new Date().getTime()));
-        return usersRepositoryImpl.save(users);
+        return usersRepository.save(users);
     }
 
     public List<Users> getAllUsers() {
-        return usersRepositoryImpl.findAll();
+        return usersRepository.findAll();
     }
 
     public Users findById(Long userId) {
-       return usersRepositoryImpl.findById(userId).orElse(null);
+       return usersRepository.findById(userId).orElse(null);
     }
 
     public void deleteById(Long usersId) {
-        usersRepositoryImpl.deleteById(usersId);
+        usersRepository.deleteById(usersId);
     }
 
     public Users putUsersById(Long usersId, UsersPostRequest usersPostRequest) {
@@ -59,7 +58,7 @@ public class UsersService {
         //TODO: implements check user
         //TODO: implements request to users converter
         //TODO: implements custom exception class
-        Optional<Users> optUsersToUpdate = usersRepositoryImpl.findById(usersId);
+        Optional<Users> optUsersToUpdate = usersRepository.findById(usersId);
 
         if (!optUsersToUpdate.isPresent()){
             return null;
@@ -70,10 +69,10 @@ public class UsersService {
         usersToUpdate.setName(usersPostRequest.getName());
         usersToUpdate.setUpdatedAt(timeUtils.getTimestampNow());
 
-        return usersRepositoryImpl.save(usersToUpdate);
+        return usersRepository.save(usersToUpdate);
     }
 
     public Users findByUsername(String username) {
-        return usersRepositoryImpl.findByUsername(username);
+        return usersRepository.findByUsername(username);
     }
 }

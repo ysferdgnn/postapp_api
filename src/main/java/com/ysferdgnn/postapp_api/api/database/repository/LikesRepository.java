@@ -1,4 +1,4 @@
-package com.ysferdgnn.postapp_api.api.database.repos.abstracts;
+package com.ysferdgnn.postapp_api.api.database.repository;
 
 import com.ysferdgnn.postapp_api.api.database.models.Likes;
 import org.springframework.data.jpa.repository.JpaRepository;

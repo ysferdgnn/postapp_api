@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,4 +42,8 @@ public class Users implements Serializable {
     @Column(name = "updatedAt")
     @ApiModelProperty(value = "User updated time")
     private Timestamp updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "users")
+    @ApiModelProperty(value = "usersCommentList")
+    private Set<Comment> comments;
 }
