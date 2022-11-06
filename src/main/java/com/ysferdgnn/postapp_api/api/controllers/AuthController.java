@@ -68,9 +68,9 @@ public class AuthController {
        {
            return  new ResponseEntity<String>("Username already taken", HttpStatus.BAD_REQUEST);
        }
-       Users usersToSave = new Users();
-        usersToSave.setUsername(registerRequest.getUsername());
-        usersToSave.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
+
+        Users usersToSave = new Users(registerRequest.getUsername(),passwordEncoder.encode(registerRequest.getPassword()));
        usersService.saveOneUsers(usersToSave);
        return new ResponseEntity<String>("User successfully registered",HttpStatus.OK);
     }

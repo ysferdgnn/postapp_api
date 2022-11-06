@@ -1,5 +1,6 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
+import com.ysferdgnn.postapp_api.api.database.models.Post;
 import com.ysferdgnn.postapp_api.api.database.models.Users;
 import com.ysferdgnn.postapp_api.api.database.repository.CommentRepository;
 import com.ysferdgnn.postapp_api.api.requests.CommentPostRequest;
@@ -8,7 +9,6 @@ import com.ysferdgnn.postapp_api.api.database.models.Comment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,14 +17,16 @@ import java.util.stream.Collectors;
 @Service
 public class CommentService {
 
-    CommentRepository commentRepository;
-    UsersService usersService;
+    private final CommentRepository commentRepository;
+    private final UsersService usersService;
+    private final PostService postService;
 
 
 
-    public CommentService(CommentRepository commentRepository,UsersService usersService) {
+    public CommentService(CommentRepository commentRepository, UsersService usersService, PostService postService) {
         this.commentRepository = commentRepository;
         this.usersService = usersService;
+        this.postService = postService;
     }
 
     public Iterable<Comment> getAllComments(int pageNo,int pageSize) {
@@ -48,7 +50,10 @@ public class CommentService {
     public Comment saveOneComment(CommentPostRequest commentPostRequest) {
         //TODO: implement validation
         Users users = usersService.findById(commentPostRequest.getUsersId());
-        Comment commentToSave = Comment.createCommentFromCommentPostRequest(commentPostRequest,users);
+        Post post = postService.findById(commentPostRequest.getPostId());
+
+        Comment commentToSave=new Comment(null,commentPostRequest.getText(),users,post);
+        //Comment commentToSave = Comment.createCommentFromCommentPostRequest(commentPostRequest,users,post);
         return commentRepository.save(commentToSave);
 
     }
@@ -60,14 +65,17 @@ public class CommentService {
         //TODO: implement check post exists
         //TODO: implement check comment exists
 
-        Optional<Comment> optCommentToPut = commentRepository.findById(commentId);
+        Optional<Comment> optCommentFound = commentRepository.findById(commentId);
         Users users = usersService.findById(commentPostRequest.getUsersId());
-        if (!optCommentToPut.isPresent())
-            return null;
-        Comment commentToPut = optCommentToPut.get();
-        commentToPut.setPostId(commentPostRequest.getPostId());
-        commentToPut.setUsers(users);
-        commentToPut.setText(commentPostRequest.getText());
+        Post post = postService.findById(commentPostRequest.getPostId());
+        if (!optCommentFound.isPresent())
+        { return null;}
+
+
+        Comment commentToPut = new Comment(null,commentPostRequest.getText(),users,post);
+//        commentToPut.setPost(post);
+//        commentToPut.setUsers(users);
+//        commentToPut.setText(commentPostRequest.getText());
         return  commentRepository.save(commentToPut);
 
     }

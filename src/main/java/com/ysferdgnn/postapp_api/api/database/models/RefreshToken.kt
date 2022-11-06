@@ -1,38 +1,34 @@
-package com.ysferdgnn.postapp_api.api.database.models;
+package com.ysferdgnn.postapp_api.api.database.models
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
+import com.ysferdgnn.postapp_api.api.database.models.Users
+import java.io.Serializable
+import java.util.*
+import javax.persistence.*
 
 @Entity
-@Data
 @Table(name = "RefreshToken")
-public class RefreshToken implements Serializable {
-
+data class RefreshToken (
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    val id: Long? = null,
 
-    @Column(name = "usersId",nullable = false)
-    private Long userId;
+    @Column(name = "usersId", nullable = false)
+    val userId: Long? = null,
 
-    @Column(name = "token",nullable = false)
-    private String token;
+    @Column(name = "token", nullable = false)
+    val token: String? = null,
 
-    @Column(name = "expiryDate",nullable = false)
+    @Column(name = "expiryDate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date expiryDate;
+    val expiryDate: Date? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "usersid",nullable = false,insertable = false,updatable = false)
-    private Users users;
-}
+    @JoinColumn(name = "usersid", nullable = false, insertable = false, updatable = false)
+    val users: Users? = null
+)

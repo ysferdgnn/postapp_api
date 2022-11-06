@@ -1,5 +1,6 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
+import com.ysferdgnn.postapp_api.api.database.models.Users;
 import com.ysferdgnn.postapp_api.api.database.repository.PostRepository;
 import com.ysferdgnn.postapp_api.api.requests.PostPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Post;
@@ -11,9 +12,11 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UsersService usersService;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, UsersService usersService) {
         this.postRepository= postRepository;
+        this.usersService = usersService;
     }
 
     public Iterable<Post> getAllPosts() {
@@ -27,13 +30,12 @@ public class PostService {
 
     public Post saveOnePost(PostPostRequest postPostRequest) {
 
+        Users user = usersService.findById(postPostRequest.getUsersId());
         //TODO: implement validation
         //TODO: implement converter class
-        Post postToSave = new Post();
-        postToSave.setText(postPostRequest.getText());
-        postToSave.setTitle(postPostRequest.getTitle());
-        postToSave.setUsersId(postPostRequest.getUsersId());
 
+
+        Post postToSave = new Post(null,postPostRequest.getTitle(),postPostRequest.getText(),user);
         return postRepository.save(postToSave);
     }
 
@@ -42,14 +44,12 @@ public class PostService {
         //TODO: implement converter class
         //TODO: implement custom exception
 
-        Optional<Post> optPostToPut = postRepository.findById(postId);
-        if (!optPostToPut.isPresent()){
+        Optional<Post> optPostFound = postRepository.findById(postId);
+        if (!optPostFound.isPresent()){
             return null;
         }
-        Post postToPut = optPostToPut.get();
-        postToPut.setUsersId(postPostRequest.getUsersId());
-        postToPut.setTitle(postPostRequest.getTitle());
-        postToPut.setText(postPostRequest.getText());
+        Users users = usersService.findById(postPostRequest.getUsersId()); //TODO: validate!
+        Post postToPut = new Post(null,postPostRequest.getTitle(),postPostRequest.getText(),users);
        return  postRepository.save(postToPut);
     }
 

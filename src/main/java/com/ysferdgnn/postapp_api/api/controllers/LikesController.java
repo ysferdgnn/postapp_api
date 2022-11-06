@@ -44,12 +44,6 @@ public class LikesController {
         return likesService.changeLikes(likesPostRequest);
     }
 
-    @PutMapping("/{likesId}")
-    @ApiOperation(value = "put one likes with likesId and likes request model")
-    public Likes putOneLikes(@PathVariable Long likesId,@RequestBody LikesPostRequest likesPostRequest){
-        return likesService.putLikesById(likesId,likesPostRequest);
-    }
-
     @DeleteMapping("/{likesId}")
     @ApiOperation(value = "delete one likes with likesId")
     public void deleteOneLikes(@PathVariable Long likesId){

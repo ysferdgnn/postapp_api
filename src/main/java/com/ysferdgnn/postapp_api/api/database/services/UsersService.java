@@ -26,19 +26,32 @@ public class UsersService {
     public  Users saveOneUsers(UsersPostRequest usersPostRequest) {
         //implements validation
         //implements convertion class
-        Users usersToSave = new Users();
-        usersToSave.setUsername(usersPostRequest.getUsername());
-        usersToSave.setName(usersPostRequest.getName());
-        usersToSave.setPassword(usersPostRequest.getPassword());
-        usersToSave.setCreatedAt(timeUtils.getTimestampNow());
-        usersToSave.setUpdatedAt(timeUtils.getTimestampNow());
 
+        Users usersToSave = new Users(
+                null,
+                usersPostRequest.getName(),
+                usersPostRequest.getUsername(),
+                usersPostRequest.getPassword(),
+                timeUtils.getTimestampNow(),
+                timeUtils.getTimestampNow(),
+                null,
+                null,
+                null);
         return  usersRepository.save(usersToSave);
     }
     public Users saveOneUsers(Users users){
-        users.setUpdatedAt(new Timestamp(new Date().getTime()));
-        users.setCreatedAt(new Timestamp(new Date().getTime()));
-        return usersRepository.save(users);
+        Users usersToSave =users
+                .copy(
+                        users.getId(),
+                        users.getName(),
+                        users.getUsername(),
+                        users.getPassword(),
+                        users.getCreatedAt(),
+                        users.getUpdatedAt(),
+                        users.getComments(),
+                        users.getPosts(),
+                        users.getLikes());
+        return usersRepository.save(usersToSave);
     }
 
     public List<Users> getAllUsers() {
@@ -58,16 +71,26 @@ public class UsersService {
         //TODO: implements check user
         //TODO: implements request to users converter
         //TODO: implements custom exception class
-        Optional<Users> optUsersToUpdate = usersRepository.findById(usersId);
+        Optional<Users> optUsersFound = usersRepository.findById(usersId);
 
-        if (!optUsersToUpdate.isPresent()){
+        if (!optUsersFound.isPresent()){
             return null;
         }
-        Users usersToUpdate =optUsersToUpdate.get();
-        usersToUpdate.setUsername(usersPostRequest.getUsername());
-        usersToUpdate.setPassword(usersPostRequest.getPassword());
-        usersToUpdate.setName(usersPostRequest.getName());
-        usersToUpdate.setUpdatedAt(timeUtils.getTimestampNow());
+
+//        usersToUpdate.setUsername(usersPostRequest.getUsername());
+//        usersToUpdate.setPassword(usersPostRequest.getPassword());
+//        usersToUpdate.setName(usersPostRequest.getName());
+//        usersToUpdate.setUpdatedAt(timeUtils.getTimestampNow());
+        Users usersToUpdate = new Users(
+                optUsersFound.get().getId(),
+                usersPostRequest.getName(),
+                usersPostRequest.getUsername(),
+                usersPostRequest.getPassword(),
+                optUsersFound.get().getCreatedAt(),
+                timeUtils.getTimestampNow(),
+                null,
+                null,
+                null);
 
         return usersRepository.save(usersToUpdate);
     }

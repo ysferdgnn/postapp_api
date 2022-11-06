@@ -1,5 +1,7 @@
 package com.ysferdgnn.postapp_api.api.database.services;
 
+import com.ysferdgnn.postapp_api.api.database.models.Post;
+import com.ysferdgnn.postapp_api.api.database.models.Users;
 import com.ysferdgnn.postapp_api.api.database.repository.LikesRepository;
 import com.ysferdgnn.postapp_api.api.requests.LikesPostRequest;
 import com.ysferdgnn.postapp_api.api.database.models.Likes;
@@ -12,10 +14,14 @@ import java.util.Optional;
 @Service
 public class LikesService {
 
-    LikesRepository likesRepository;
+    private final LikesRepository likesRepository;
+    private final PostService postService;
+    private final UsersService usersService;
 
-    public LikesService(LikesRepository likesRepository) {
+    public LikesService(LikesRepository likesRepository, PostService postService, UsersService usersService) {
         this.likesRepository = likesRepository;
+        this.postService = postService;
+        this.usersService = usersService;
     }
 
     public List<Likes> getAllLikes() {
@@ -29,30 +35,11 @@ public class LikesService {
 
     public Likes saveOneLikes(LikesPostRequest likesPostRequest) {
         //TODO: implement converter
-        Likes likesToSave = new Likes();
-        likesToSave.setPostId(likesPostRequest.getPostId());
-        likesToSave.setUsersId(likesPostRequest.getUsersId());
+
+        Post post =postService.findById(likesPostRequest.getPostId());
+        Users users  = usersService.findById(likesPostRequest.getUsersId());
+        Likes likesToSave = new Likes(null,users,post);
        return likesRepository.save(likesToSave);
-    }
-
-
-
-    public Likes putLikesById(Long likesId, LikesPostRequest likesPostRequest) {
-        //TODO: implement converter
-        //TODO: implement check user
-        //TODO: implement custom exception
-
-        Optional<Likes> optLikesToUpdate = likesRepository.findById(likesId);
-
-        if (!optLikesToUpdate.isPresent()){
-            return null;
-        }
-       Likes likesToUpdate= optLikesToUpdate.get();
-        likesToUpdate.setUsersId(likesPostRequest.getUsersId());
-        likesToUpdate.setPostId(likesPostRequest.getPostId());
-       return likesRepository.save(likesToUpdate);
-
-
     }
 
     public void deleteById(Long likesId) {
@@ -60,13 +47,13 @@ public class LikesService {
     }
 
     public Likes changeLikes(LikesPostRequest likesPostRequest) {
-        Likes likesToSave = new Likes();
-        likesToSave.setPostId(likesPostRequest.getPostId());
-        likesToSave.setUsersId(likesPostRequest.getUsersId());
+        Post post =postService.findById(likesPostRequest.getPostId());
+        Users users  = usersService.findById(likesPostRequest.getUsersId());
 
+        Likes likesToSave = new Likes(null,users,post);
         Likes likesfromDb;
         try{
-            likesfromDb= likesRepository.findByUsersIdAndPostId(likesToSave.getUsersId(),likesToSave.getPostId());
+            likesfromDb= likesRepository.findByUsersAndPost(likesToSave.getUsers(),likesToSave.getPost());
         }catch (NoResultException exception){
             likesfromDb=null;
         }

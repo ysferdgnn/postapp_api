@@ -1,7 +1,9 @@
 package com.ysferdgnn.postapp_api.api.security.tokenProviders;
 
 import com.ysferdgnn.postapp_api.api.database.models.RefreshToken;
+import com.ysferdgnn.postapp_api.api.database.models.Users;
 import com.ysferdgnn.postapp_api.api.database.services.RefreshTokenService;
+import com.ysferdgnn.postapp_api.api.database.services.UsersService;
 import com.ysferdgnn.postapp_api.api.security.models.JwtUserDetails;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +25,12 @@ public class JwtTokenProvider {
     @Value("${postapp.refresh.token.expires.in}")
     private Long REFRESH_TOKEN_EXPIRES_IN;
 
-    private RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
+    private final UsersService usersService;
 
-    public JwtTokenProvider(RefreshTokenService refreshTokenService) {
+    public JwtTokenProvider(RefreshTokenService refreshTokenService, UsersService usersService) {
         this.refreshTokenService = refreshTokenService;
+        this.usersService = usersService;
     }
 
     public String generateJwtToken(Authentication authentication){
@@ -55,9 +59,9 @@ public class JwtTokenProvider {
 
     public RefreshToken generateJwtTokenByUserId(Long userId){
 
-        Optional<RefreshToken> refreshTokenDb = refreshTokenService.findByUserId(userId);
+        Optional<RefreshToken> refreshTokenFound = refreshTokenService.findByUserId(userId);
 
-        RefreshToken refreshToken =  refreshTokenDb.orElse(new RefreshToken());
+       // RefreshToken refreshToken =  refreshTokenFound.orElse(new RefreshToken());
         Date expireDate = new Date(new Date().getTime()+ REFRESH_TOKEN_EXPIRES_IN);
 
         String token= Jwts.builder().setSubject(Long.toString(userId))
@@ -66,9 +70,9 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, APP_SECRET)
                 .compact();
 
-         refreshToken.setToken(token);
-         refreshToken.setUserId(userId);
-         refreshToken.setExpiryDate(expireDate);
+        Users users =usersService.findById(userId);
+        RefreshToken refreshToken = new RefreshToken(refreshTokenFound.map(RefreshToken::getId).orElse(null),users.getId(),token,expireDate,users);
+
 
 
             refreshTokenService.saveOneRefreshToken(refreshToken);

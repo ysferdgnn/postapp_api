@@ -18,7 +18,7 @@ public class PostAndLikesDto {
         this.id=post.getId();
         this.title=post.getTitle();
         this.text=post.getText();
-        this.usersId=post.getUsersId();
+        this.usersId=post.getUsers().getId();
         this.likes=post.getLikes();
     }
 }

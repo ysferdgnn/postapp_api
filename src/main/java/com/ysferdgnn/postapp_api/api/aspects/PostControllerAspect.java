@@ -12,6 +12,6 @@ public class PostControllerAspect {
 
     @Before("execution(* com.ysferdgnn.postapp_api.api.controllers.PostController.deleteOnePost(..))")
     public void checkuser(JoinPoint point) throws Exception {
-        throw  new Exception("test");
+       // throw  new Exception("test");
     }
 }
